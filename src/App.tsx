@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useRef, useState} from 'react';
+import React, {useState} from 'react';
 import './App.css';
 import {PostList} from "./Component/PostList";
 import {MyButton} from "./Component/UI/Button/MyButton";
@@ -13,17 +13,19 @@ export type postTypes = {
 }
 type postValueTypes = {
     title: string,
-    desc: string,
-    isDone: boolean
+    desc: string
 }
 function App() {
-    const [inputPost, setInputPost] = useState<postValueTypes>({title: '', desc: '', isDone: false})
+    const [inputPost, setInputPost] = useState<postValueTypes>({title: '', desc: ''})
     const [posts, setPost] = useState<postTypes[]>([
         {id: 1, title: 'JAVA SCRIPT', desc: 'Учите дети JS', isDone: true},
         {id: 2, title: 'HTML&CSS', desc: 'Учите дети HTML&CSS', isDone: false},
         {id: 3, title: 'React TS', desc: 'Учите дети React TS', isDone: false}
     ])
     const [filter, setFilter] = useState<string>('All');
+    const handlerOnChangeFilter = (e: React.ChangeEvent<HTMLSelectElement> ) => {
+        setFilter(e.target.value)
+    }
     const handlerOnChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInputPost(prev => ({...prev, title: e.target.value, isDone: false}))
     }
@@ -32,13 +34,30 @@ function App() {
     }
     const handlerOnClickAddPost = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault(); //оставить sumbit
-        setPost(prev => [...prev,{...inputPost, id: Date.now()}])
-        setInputPost(prev => ({...prev, title: '', desc: '', isDone: false}))
+        if(inputPost.desc !== '' && inputPost.title !== '') {
+            setPost(prev => [...prev,{...inputPost, isDone: false, id: Date.now()}])
+        }
+        setInputPost(prev => ({...prev, title: '', desc: ''}))
 
     }
-    const filtredPosts = posts
-    if( filter === 'Completed') filtredPosts.filter( i => i.isDone)
-    if( filter === 'Completed') filtredPosts.filter( i => !i.isDone)
+    const handlerOnChangeCheckbox = (id: number) => {
+
+        setPost(prev => prev.map( item => {
+            console.log('------START-------')
+            console.log(item)
+            if(item.id === id) {
+                item.isDone = !item.isDone
+                console.log(`isDone ${item.isDone}`)
+            }
+            console.log('------END--------')
+            return item
+        }))
+
+    }
+    let filtredPosts = posts
+    if( filter === 'Active') filtredPosts = posts.filter( i => !i.isDone)
+    if( filter === 'Completed') filtredPosts = posts.filter( i => i.isDone)
+
     const removePost = (id: number) => {
         setPost( prev => prev.filter(item => item.id !== id))
     }
@@ -61,13 +80,14 @@ function App() {
                     <MyButton onClick={handlerOnClickAddPost}>Отправить</MyButton>
                 </div>
                 <MySelect
-                    options={['All','Completed','Active']}
+                    options={['All','Active','Completed']}
                     default={'Сортировка'}
-                    onChange={setFilter}
+                    onChange={handlerOnChangeFilter}
+
                 />
             </form>
             { posts.length > 0 ?
-                <PostList posts={filtredPosts} onClick={removePost}/>
+                <PostList posts={filtredPosts} onClick={removePost} handlerOnChangeCheckbox={handlerOnChangeCheckbox}/>
             :
                 <h1 style={{textAlign: "center"}}>Пусто!</h1>
             }
