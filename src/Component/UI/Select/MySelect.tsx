@@ -3,8 +3,7 @@ import React from 'react';
 interface IMySelect {
     options: string[],
     default: string,
-    onChange(e: React.ChangeEvent<HTMLSelectElement>): void,
-
+    onChange(e: React.ChangeEvent<HTMLSelectElement>): void
 }
 
 const MySelect: React.FC<IMySelect> = (props) => {

@@ -37,6 +37,10 @@ function App() {
         if(inputPost.desc !== '' && inputPost.title !== '') {
             setPost(prev => [...prev,{...inputPost, isDone: false, id: Date.now()}])
         }
+        // {/*Peter Live убери из index.js обертку react strict mode которая скореее всего у тебя есть в твоей сборке.
+        // Когда автор записывал видео этой обертки не было. В случае наличия этой обертки,
+        // повторный рендер - запланированное поведение/*}
+
         setInputPost(prev => ({...prev, title: '', desc: ''}))
 
     }
