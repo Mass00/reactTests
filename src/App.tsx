@@ -41,18 +41,7 @@ function App() {
 
     }
     const handlerOnChangeCheckbox = (id: number) => {
-
-        setPost(prev => prev.map( item => {
-            console.log('------START-------')
-            console.log(item)
-            if(item.id === id) {
-                item.isDone = !item.isDone
-                console.log(`isDone ${item.isDone}`)
-            }
-            console.log('------END--------')
-            return item
-        }))
-
+        setPost(prev => prev.map( item => ({...item, isDone: item.id === id ? !item.isDone : item.isDone})))
     }
     let filtredPosts = posts
     if( filter === 'Active') filtredPosts = posts.filter( i => !i.isDone)
