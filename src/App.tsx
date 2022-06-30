@@ -42,9 +42,14 @@ function App() {
         if (inputPost.desc !== '' && inputPost.title !== '') {
             setPost(prev => [...prev, {...inputPost, isDone: false, raiting: 0 ,id: Date.now()}])
         }
+        // {/*Peter Live убери из index.js обертку react strict mode которая скореее всего у тебя есть в твоей сборке.
+        // Когда автор записывал видео этой обертки не было. В случае наличия этой обертки,
+        // повторный рендер - запланированное поведение/*}
+
         setInputPost(prev => ({...prev, title: '', desc: ''}))
 
     }
+<<<<<<< HEAD
     const handlerOnPressAddPost = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
             if (inputPost.desc !== '' && inputPost.title !== '') {
@@ -66,6 +71,10 @@ function App() {
             return item
         }))
 
+=======
+    const handlerOnChangeCheckbox = (id: number) => {
+        setPost(prev => prev.map( item => ({...item, isDone: item.id === id ? !item.isDone : item.isDone})))
+>>>>>>> 1e2bc842ee99439be68524aa7164d918e7b411fb
     }
     const handlerOnChangeSearchQuery = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchQuery(e.target.value)
