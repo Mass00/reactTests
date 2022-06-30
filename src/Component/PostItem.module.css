@@ -1,3 +1,10 @@
 .input {
     margin-right: 10px;
 }
+.stars {
+    display: flex;
+    position: absolute;
+    top: 25px;
+    left: 15px;
+    cursor: default;
+}

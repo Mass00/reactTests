@@ -4,8 +4,9 @@ import styles from './MyInput.module.css'
 interface IMyInput {
     type: 'text',
     placeholder: string,
-    value: string
-    onChange(e: React.ChangeEvent<HTMLInputElement>): void
+    value?: string
+    onChange?(e: React.ChangeEvent<HTMLInputElement>): void,
+    onKeyDown?(e: React.KeyboardEvent<HTMLInputElement>): void
 }
 
 
